@@ -44,11 +44,20 @@ class SentimentPredictor:
         return [
             {
                 "text": text,
-                "label": result["label"].lower().replace("label_", "").replace("pos", "positive").replace("neg", "negative"),
+                "label": self._normalise_label(result["label"]),
                 "score": result["score"],
             }
             for text, result in zip(texts, raw_results)
         ]
+
+    @staticmethod
+    def _normalise_label(raw: str) -> str:
+        val = raw.lower()
+        if val in ("positive", "pos", "label_1", "1"):
+            return "positive"
+        if val in ("negative", "neg", "label_0", "0"):
+            return "negative"
+        return val
 
     def _predict_with_model(self, texts: List[str]) -> List[Dict]:
         self._model.eval()
