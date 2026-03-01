@@ -22,6 +22,7 @@ class SentimentPredictor:
             self._pipeline = pipeline(
                 "sentiment-analysis",
                 model=pretrained_model,
+                framework="pt",
                 device=0 if device == "cuda" else -1,
             )
             self._model = None

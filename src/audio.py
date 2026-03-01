@@ -14,14 +14,14 @@ class AudioTranscriber:
     def transcribe(self, audio_path: str, language: Optional[str] = None) -> str:
         path = Path(audio_path)
 
-        if not path.exists():
-            raise FileNotFoundError(f"Audio file not found: {audio_path}")
-
         if path.suffix.lower() not in self.SUPPORTED_FORMATS:
             raise ValueError(
                 f"Unsupported format '{path.suffix}'. "
                 f"Supported: {', '.join(self.SUPPORTED_FORMATS)}"
             )
+
+        if not path.exists():
+            raise FileNotFoundError(f"Audio file not found: {audio_path}")
 
         options = {}
         if language:
@@ -39,6 +39,12 @@ class AudioTranscriber:
 
     def transcribe_with_timestamps(self, audio_path: str) -> dict:
         path = Path(audio_path)
+
+        if path.suffix.lower() not in self.SUPPORTED_FORMATS:
+            raise ValueError(
+                f"Unsupported format '{path.suffix}'. "
+                f"Supported: {', '.join(self.SUPPORTED_FORMATS)}"
+            )
 
         if not path.exists():
             raise FileNotFoundError(f"Audio file not found: {audio_path}")
